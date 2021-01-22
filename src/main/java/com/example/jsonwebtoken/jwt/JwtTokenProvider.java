@@ -3,7 +3,6 @@ package com.example.jsonwebtoken.jwt;
 import com.example.jsonwebtoken.service.MemberService;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
@@ -57,7 +55,6 @@ public class JwtTokenProvider {
             Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token);
             return true;
         } catch (Exception e){
-            log.info("Error");
             e.printStackTrace();
         }
         return false;
