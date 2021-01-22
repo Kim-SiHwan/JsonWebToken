@@ -31,10 +31,15 @@ public class SampleController {
 
     @PostMapping("/save")
     public ResponseEntity save(@RequestBody JoinDto dto){
+        String role = "";
+        if(dto.getUsername().equals("admin"))
+            role="ROLE_ADMIN";
+        else
+            role="ROLE_USER";
         Member member = Member.builder()
                 .username(dto.getUsername())
                 .password(passwordEncoder.encode(dto.getPassword()))
-                .role("ROLE_USER")
+                .role(role)
                 .build();
 
         return new ResponseEntity(memberService.save(member),HttpStatus.CREATED);
