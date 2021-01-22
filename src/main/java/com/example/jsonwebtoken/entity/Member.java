@@ -14,7 +14,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Member {
 
-    @JsonIgnore
     @Id
     @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +22,6 @@ public class Member {
     @Column(name = "username", length = 50, unique = true)
     private String username;
 
-    @JsonIgnore
     @Column(name = "password", length = 100)
     private String password;
 
