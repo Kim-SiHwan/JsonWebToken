@@ -31,7 +31,6 @@ public class MemberService implements UserDetailsService {
 
     private Boolean validateDuplicateMember(Member member) {
         Optional getMember = repository.findByUsername(member.getUsername());
-        System.out.println(getMember);
         if (!getMember.isEmpty()) {
             return false;
         }
