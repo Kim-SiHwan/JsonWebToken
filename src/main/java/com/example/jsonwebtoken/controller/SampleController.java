@@ -28,19 +28,9 @@ public class SampleController {
     private final AuthenticationManagerBuilder managerBuilder;
     private final JwtTokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
-    @GetMapping("/test")
-    public ResponseEntity hi(){
-        return new ResponseEntity("testString! ", HttpStatus.OK);
-    }
-
-    @GetMapping("/test2")
-    public ResponseEntity hi2(){
-        return new ResponseEntity("testString!2 ", HttpStatus.OK);
-    }
 
     @PostMapping("/save")
     public ResponseEntity save(@RequestBody JoinDto dto){
-        System.out.println("post save: " +dto.getUsername()+" "+dto.getPassword());
         Member member = Member.builder()
                 .username(dto.getUsername())
                 .password(passwordEncoder.encode(dto.getPassword()))
@@ -50,20 +40,16 @@ public class SampleController {
         return new ResponseEntity(memberService.save(member),HttpStatus.CREATED);
     }
 
-    @PostMapping("/authenticate")
+    @PostMapping("/auth")
     public ResponseEntity authorize(@RequestBody LoginDto loginDto){
-        System.out.println("loginDTO");
-        System.out.println(loginDto.getUsername()+" "+loginDto.getPassword());
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginDto.getUsername(),loginDto.getPassword());
 
         Authentication auth = managerBuilder.getObject().authenticate(token);
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         String jwt= tokenProvider.createToken(auth);
-        System.out.println("contorller jwt : "+jwt);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer "+jwt);
-        System.out.println("header : "+httpHeaders);
         HashMap<String,String> map =new HashMap<>();
         map.put("token",jwt);
         return new ResponseEntity(map, httpHeaders, HttpStatus.OK);
